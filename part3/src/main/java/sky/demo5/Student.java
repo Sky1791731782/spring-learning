@@ -16,6 +16,8 @@ import javax.annotation.Resource;
             1.属性定义的上面无需set方法，推荐使用
             2.在set方法上面
      先使用byName，如果不行则使用byType
+     只使用byName需要增加属性name
+     name的值是bean的id
 */
 
 @Component(value = "mystudent")
@@ -24,7 +26,7 @@ public class Student {
     private String name;
     @Value("20")
     private int age;
-    @Resource
+    @Resource(name = "school")
     private School school;
     public void setSchool(School school) {
         this.school = school;
