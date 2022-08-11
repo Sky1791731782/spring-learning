@@ -1,0 +1,47 @@
+aop:面向切面编程，基于动态代理，可以使用jdk，cglib两种代理方式
+    aop就是动态代理的规范化，把动态代理的实现方式定义好了，让开发人员用一种统一的方式，
+    就用动态代理
+    1.切面，就是给目标类的方法额外增加的功能
+        特点：和业务方法没关系，可以独立使用
+    2.JoinPoint:连接点，连接业务方法和切面的位置，就是某类中的业务方法
+    3.pointcut:切入点，指多个连接点方法的集合
+    4.目标对象:需要增加功能的类
+    5.Advice:通知，表示切面功能执行的时间
+    切面的三要素:
+        1.功能
+        2.执行位置
+        3.执行时间，用Advice表示时间
+    aop的实现:
+        实现框架:
+            1.spring:主要在事务处理时使用，项目开发中不常用，
+                因为spring的aop比较笨重，麻烦;
+            2.aspectJ:一个开源的专门做aop的框架（最权威的）spring框架集成了aspectJ
+                通过spring就能使用aspectJ框架的功能
+             实现aop有两种方式:
+                        1.xml配置文件
+                        2.注解，项目常用
+    aop使用:
+        1.切面的执行时间:注解表示，xml标签表示
+                五个通知注解:
+                    1.@Before
+                    2.@AfterReturning
+                    3.@Around
+                    4.@AfterThrowing
+                    5.@After
+        2.切面的位置表示:使用的是切入点表达式:
+                            execution(modifiers-pattern? ret-type-pattern
+                            declaring-type-pattern?name-pattern(param-pattern)
+                            throws-pattern?)
+                            解释:
+                            modifiers-pattern] 访问权限类型
+                            ret-type-pattern 返回值类型
+                            declaring-type-pattern 包名类名
+                            name-pattern(param-pattern)方法名(参数类型和参数个数)
+                            throws-pattern 抛出异常类型
+                            ﹖表示可选的部分
+                            以上表达式共4个部分。
+                            execution(访问权限 方法返回值 方法声明(参数) 异常类型)
+                            *:表示任意字符
+                            ..:表示任意多个参数
+                            +:用在类名后表示当前类及其子类
+                               用在接口名后表示当接口及其实现类
