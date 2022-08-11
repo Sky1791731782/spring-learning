@@ -1,0 +1,14 @@
+1.target目录下加载不出applicationContext.xml文件
+    找到applicationContext.xml文件直接复制过去
+    注意修改时两个都要修改
+2.@Resource注解在javax.annotation包下，此包已被移除
+    解决方法:1.使用jdk8
+           2.导入依赖
+           <dependency>
+                 <groupId>javax.annotation</groupId>
+                 <artifactId>javax.annotation-api</artifactId>
+                 <version>1.3.2</version>
+               </dependency>
+3.配置文件与注解的使用:
+     需要经常改的使用配置文件
+     不经常改的使用注解
