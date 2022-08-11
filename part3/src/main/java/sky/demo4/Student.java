@@ -1,7 +1,8 @@
-package sky.demo4.demo3;
+package sky.demo4;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,8 @@ public class Student {
     @Value("20")
     private int age;
     @Autowired
+    @Qualifier(value = "school")
+
     private School school;
     public void setSchool(School school) {
         this.school = school;

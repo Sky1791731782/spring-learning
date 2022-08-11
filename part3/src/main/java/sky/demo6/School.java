@@ -1,9 +1,9 @@
-package sky.demo4.demo3;
+package sky.demo6;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@Component("myschool")
+@Component("school")
 public class School {
     @Value("北京大学")
     private String name;

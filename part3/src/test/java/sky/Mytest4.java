@@ -3,9 +3,9 @@ package sky;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import sky.demo3.Student;
+import sky.demo4.Student;
 
-public class Mytest2 {
+public class Mytest4 {
     @Test
     public void test01(){
         String config = "memo3/applicationContext.xml";
