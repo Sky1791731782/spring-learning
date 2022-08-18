@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <!--设置别名-->
+    <typeAliases>
+        <!--name是实体类所在的包名-->
+        <package name="sky.daomain"/>
+    </typeAliases>
+    <!--设置sql mapper文件(sql文件)的位置-->
+    <mappers>
+        <!--
+           <mapper resource=""></mapper>
+            name是包名，这个包里的mapper.xml文件一次都能加载
+            这里也可以用<package>标签
+        -->
+        <package name="dao"/>
+
+    </mappers>
+
+</configuration>

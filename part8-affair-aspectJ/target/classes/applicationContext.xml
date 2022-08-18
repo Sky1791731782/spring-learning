@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd"><!---->
+    <!--声明数据源DataSource，作用是连接数据库-->
+    <!--
+        把数据库的配置信息，写在一个独立的文件（属性文件），编译修改数据库的配置内容
+        告诉spring 属性文件的位置
+        位置要加classpath
+    -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <bean id="myDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+     init-method="init" destroy-method="close">
+    <!--set注入给DruidDataSource提供连接数据库的信息-->
+        <!--
+            使用属性配置文件中的数据，语法格式:  ${key}
+        -->
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--set注入，把数据库连接池属性付给dataSource属性-->
+        <property name="dataSource" ref="myDataSource"/>
+        <!--
+            mybatis主配置文件的位置
+            configLocation属性是resource类型，读取配置文件，赋值使用value
+            指定文件路径使用classpath:表示文件的位置
+        -->
+        <property name="configLocation" value="classpath:mybatis.xml"/>
+    </bean>
+    <!--
+        创建dao对象，使用sqlSession的getMapper(StudentDao.class)
+        MapperScannerConfigurer:内部调用getMapper()生成每个dao接口的代理对象
+    -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--指定sqlSessionFactory对象的ID-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!--
+            指定包名:dao接口所在的包名
+            MapperScannerConfigurer 会扫描这个包内的所有接口
+            把每个接口都执行一次getMapper方法，得到每个接口的dao对象
+            创建好的dao对象放入到spring的容器中
+        -->
+        <property name="basePackage" value="dao"/>
+    </bean>
+    <!--声明service-->
+    <bean id="buyService" class="service.imp.BuyGoodServiceImpl">
+        <property name="goodsDao" ref="goodsDao"/>
+        <property name="saleDao" ref="saleDao"/>
+    </bean>
+    <!--声明式事务管理 和源代码完全分离-->
+    <!--1.声明事务处理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--连接的数据库,指定数据源-->
+        <property name="dataSource" ref="myDataSource"/>
+    </bean>
+    <!--
+        声明业务方法的事务属性（隔离级别，传播行为，超时时间
+        id自定义名称 表示 tx:advice 之间的配置内容
+    -->
+    <tx:advice id="myadvice" transaction-manager="transactionManager">
+        <!--tx:attributes表示配置事务属性-->
+        <tx:attributes>
+            <!--
+                tx:method表示给具体的方法设置属性
+                name:表示方法名，1）完整的方法名（不带包类），
+                               2）可以使用通配符
+                propagation:传播行为
+                isolation:隔离级别
+                rollback-for:异常类名，全限定类称
+             -->
+            <tx:method name="buy" propagation="REQUIRED" isolation="DEFAULT"
+                       rollback-for="exception.NotEnoughException,java.lang.NullPointerException"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--配置aop-->
+    <aop:config>
+        <!--
+            配置切入点表达式:指定哪些包中的类应用事务
+            id:表示切入点表达式的名称，expression：切入点表达式，指定哪些类使用事务
+        -->
+        <aop:pointcut id="servicept" expression="execution(* *..service..*.*(..))"/>
+        <!--配置增强器:关联advice和pointcut-->
+        <aop:advisor advice-ref="myadvice" pointcut-ref="servicept"/>
+    </aop:config>
+    <!--
+        开启事务注解驱动,告诉spring使用注解管理事务，创建代理对象
+        transaction-manager:事务管理器对象的ID
+    -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>

@@ -1,0 +1,7 @@
+domain\Sale.class
+dao\SaleDao.class
+dao\GoodsDao.class
+service\imp\BuyGoodServiceImpl.class
+service\BuyGoodService.class
+domain\Goods.class
+exception\NotEnoughException.class
