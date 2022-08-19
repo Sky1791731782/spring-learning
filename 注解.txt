@@ -1,0 +1,42 @@
+/**
+ * @Componet: 创建对象的,等同于bean
+ *      属性value: 是对象的名称对应bean中ID值
+ *          value值是唯一的，创建的对象在整个spring容器中就一个
+                @Value：简单类型的属性赋值
+                    属性：value是string类型的，表示简单类型的属性值
+                    位置：1.在属性定义的上面，无需set方法，推荐使用
+                         2.在set方法上面
+          引用类型赋值:
+                    @Autowired: 自动注入原理支持byName,byType 默认使用的是byType
+                         位置：1.属性定义的上面无需set方法，推荐使用
+                              2.在set方法上面
+             如果使用的是byName 方式：
+                   1.在属性上面加入@Autowired注解
+                   2.在属性上面加入@Qualifier(value = "bean的id"):表示使用指定名称完成赋值
+
+             @Resource:来自jdk中的注解，spring框架提供了对这个注解的功能支持，可以用来给引用类型赋值
+             使用的也是自动注入的方式，支持byName，byType默认是byName
+             位置:
+                     1.属性定义的上面无需set方法，推荐使用
+                     2.在set方法上面
+              先使用byName，如果不行则使用byType
+              只使用byName需要增加属性name
+              name的值是bean的id
+* 位置：在类上面
+ * @Component(value = "mystudent")等同于
+ * <bean id ="mystudent" class="org.annotationUse.ComponentdDemo.Student"/>
+ *创建对象的注解还有
+ *  1.@Repository
+ *  2.@Service
+ *  3.@Controller
+ * /
+
+     /**
+      *@Component("mystudent") 最常用
+      * @Component 默认名是类名首字母小写
+      *
+      * 指定多种包的方式:
+      * 1.多条@Component注解
+      * 2.使用分隔符(, ;)
+      * 3.指定父包
+      */
