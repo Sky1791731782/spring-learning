@@ -1,0 +1,13 @@
+注解的使用:
+    1.加入maven依赖spring-context，加入spring-context的同时
+        间接加入了spring-aop的依赖，使用注解必须有spring-aop的依赖
+    2.在类中加入spring的注解
+    3.在spring的配置文件中加入一个组件扫描器的标签，说明注解在你项目中的位置
+    重要注解：
+        1.@Component
+        2.@Resportory
+        3.@Service
+        4.@Controller
+        5.@Value
+        6.@Autowired
+        7.@Resource
